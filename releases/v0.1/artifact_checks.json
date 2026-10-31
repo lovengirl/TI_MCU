@@ -1,0 +1,142 @@
+[
+  {
+    "check": "pin TX_A0",
+    "pass": true
+  },
+  {
+    "check": "pin TX_A1",
+    "pass": true
+  },
+  {
+    "check": "pin TX_A2",
+    "pass": true
+  },
+  {
+    "check": "pin TX_A3",
+    "pass": true
+  },
+  {
+    "check": "pin TX_A4",
+    "pass": true
+  },
+  {
+    "check": "pin TX_EN",
+    "pass": true
+  },
+  {
+    "check": "pin RX_A0",
+    "pass": true
+  },
+  {
+    "check": "pin RX_A1",
+    "pass": true
+  },
+  {
+    "check": "pin RX_A2",
+    "pass": true
+  },
+  {
+    "check": "pin RX_A3",
+    "pass": true
+  },
+  {
+    "check": "pin RX_A4",
+    "pass": true
+  },
+  {
+    "check": "pin RX_EN",
+    "pass": true
+  },
+  {
+    "check": "pin HOST_IRQ",
+    "pass": true
+  },
+  {
+    "check": "pin HOST_RESET",
+    "pass": true
+  },
+  {
+    "check": "pin STATUS",
+    "pass": true
+  },
+  {
+    "check": "pin SCAN_MARK",
+    "pass": true
+  },
+  {
+    "check": "pin CS_N",
+    "pass": true
+  },
+  {
+    "check": "80 MHz CPU",
+    "pass": true
+  },
+  {
+    "check": "ADC0 channel 0, PA27",
+    "pass": true
+  },
+  {
+    "check": "ADC requires each timer trigger",
+    "pass": true
+  },
+  {
+    "check": "DAC on PA15",
+    "pass": true
+  },
+  {
+    "check": "DMA half-word source/destination",
+    "pass": true
+  },
+  {
+    "check": "DMA source fixed destination increments",
+    "pass": true
+  },
+  {
+    "check": "SPI software CS: no unexpected hardware CS pin",
+    "pass": true
+  },
+  {
+    "check": "watchdog 1 second",
+    "pass": true
+  },
+  {
+    "check": "initial stack pointer in SRAM",
+    "pass": true
+  },
+  {
+    "check": "2048 byte stack",
+    "pass": true
+  },
+  {
+    "check": "vector SysTick_Handler",
+    "pass": true
+  },
+  {
+    "check": "vector TIMG0_IRQHandler",
+    "pass": true
+  },
+  {
+    "check": "vector DMA_IRQHandler",
+    "pass": true
+  },
+  {
+    "check": "vector UART0_IRQHandler",
+    "pass": true
+  },
+  {
+    "check": "no BCR or BSL provisioning payload",
+    "pass": true
+  },
+  {
+    "check": "load segment 0x0",
+    "pass": true
+  },
+  {
+    "check": "load segment 0x20200000",
+    "pass": true
+  },
+  {
+    "check": "load segment 0x20207800",
+    "pass": true
+  }
+]

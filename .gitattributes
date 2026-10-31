@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.a binary
+*.out binary
+mapping_sensor_fw/ccs_support/** -whitespace
+mapping_sensor_fw/ccs_support/sdk/** -text
+releases/** -text -whitespace

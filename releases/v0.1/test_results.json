@@ -1,0 +1,7 @@
+{
+  "test_cases_passed": 13,
+  "assertions": 20948,
+  "failed_case": 0,
+  "failed_line": 0,
+  "scope": "TI Arm Clang compiled sensor.c on ARM Thumb emulator; mock HAL, no peripheral timing simulation"
+}

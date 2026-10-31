@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectSpec>
+ <project name="mapping_sensor_mspm0g3507" title="20-channel mapping sensor" configurations="Debug" toolChain="TICLANG" connection="TIXDS110_Connection.xml" device="MSPM0G3507" ignoreDefaultDeviceSettings="true" ignoreDefaultCCSSettings="true"
+ compilerBuildOptions="-I../include -I../generated -I../sdk/source -I../sdk/source/third_party/CMSIS/Core/Include -D__MSPM0G3507__ -mcpu=cortex-m0plus -march=thumbv6m -mthumb -mfloat-abi=soft -O2 -g -Wall -Wextra -Werror"
+ linkerBuildOptions="-L../sdk/source -L${CG_TOOL_ROOT}/lib -lti/driverlib/lib/ticlang/m0p/mspm0g1x0x_g3x0x/driverlib.a -llibc.a -Wl,--rom_model -Wl,--warn_sections -Wl,--stack_size=2048 -Wl,--heap_size=0">
+  <property name="buildProfile" value="release"/>
+  <file path="src/main.c" action="copy" targetDirectory="src"/>
+  <file path="src/sensor.c" action="copy" targetDirectory="src"/>
+  <file path="src/platform_mspm0.c" action="copy" targetDirectory="src"/>
+  <file path="include/sensor.h" action="copy" targetDirectory="include"/>
+  <file path="include/platform.h" action="copy" targetDirectory="include"/>
+  <file path="ccs_support/ti_msp_dl_config.c" action="copy" targetDirectory="generated"/>
+  <file path="ccs_support/ti_msp_dl_config.h" action="copy" targetDirectory="generated"/>
+  <file path="ccs_support/firmware_linker.cmd" action="copy"/>
+  <file path="ccs_support/startup_mspm0g350x_ticlang.c" action="copy" targetDirectory="src"/>
+  <file path="ccs_support/sdk" action="copy" excludeFromBuild="true"/>
+  <file path="board.syscfg" action="copy" excludeFromBuild="true"/>
+  <file path="README.md" action="copy"/>
+ </project>
+</projectSpec>
