@@ -1,5 +1,6 @@
 build/
 ccs_workspace/
 ccs_verified_workspace/
+ccs_v2_workspace/
 tools/python_deps/
 *.zip

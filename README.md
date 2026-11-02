@@ -5,11 +5,13 @@ MSPM0G3507SPMR 기반 20채널 Tx/Rx 순차 제어와 DAC 광량 조절을 검�
 - [사용법·핀 배치·UART 시험 순서](mapping_sensor_fw/README.md)
 - [내부 검증 결과](mapping_sensor_fw/VALIDATION.md)
 - [CCS 프로젝트 가져오기](mapping_sensor_fw/mapping_sensor.projectspec)
-- [다운로드용 OUT](releases/v0.1/mapping_sensor.out) / [Intel HEX](releases/v0.1/mapping_sensor.hex)
-- [ARM 에뮬레이션 결과](releases/v0.1/test_results.json)
-- [생성 설정·ELF 검사 결과](releases/v0.1/artifact_checks.json)
+- [V2 블록별 구조·API 설계](mapping_sensor_fw/ARCHITECTURE_V2.md)
+- [V2 다운로드용 OUT](releases/v0.2/mapping_sensor.out) / [Intel HEX](releases/v0.2/mapping_sensor.hex)
+- [V2 응용·프로토콜 에뮬레이션 결과](releases/v0.2/test_results.json)
+- [V2 실제 드라이버 레지스터 계약 검사](releases/v0.2/driver_test_results.json)
+- [V2 생성 설정·ELF 검사 결과](releases/v0.2/artifact_checks.json)
 
-CCS 21.0.1 자체 빌드: 오류 0 / 경고 0. 측정 코어 ARM 에뮬레이션: 13 시나리오, 20,948 assertion 통과. 생성 설정·ELF 검사: 35개 통과.
+V2는 19개 C 파일을 블록별로 분리했습니다. CCS 21.0.1 자체 빌드: 오류 0 / 경고 0. 응용·프로토콜 통합 ARM 시험: 15 시나리오 / 15,933 assertion, 실제 드라이버 레지스터 계약 시험: 6 시나리오 / 42 assertion 통과. 생성 설정·ELF 검사: 35개 통과. 레지스터 시험은 메모리로 치환한 레지스터에 값을 주입하는 방식이며 실제 주변장치 시뮬레이션은 아닙니다.
 
 MCU 라이팅과 실물 검증은 수행하지 않았습니다. 아날로그 파형·실제 주변장치 타이밍은 보드 시험이 필요합니다. 설정은 RAM 전용이며 CC-Link IE TSN 통신 스택과 자동 광량 보정은 포함하지 않습니다.
 
@@ -19,7 +21,7 @@ MCU 라이팅과 실물 검증은 수행하지 않았습니다. 아날로그 파
 
 독립 빌드 및 SysConfig 재생성에는 MSPM0 SDK 2.11.00.07 전체가 필요합니다. 이 저장소에는 전체 SDK 대신 CCS 빌드에 필요한 파일만 포함합니다. `build.ps1 -SdkRoot <SDK 경로>`로 지정할 수 있습니다. 생성 파일 패키지를 갱신할 때는 `python tools/prepare_ccs.py --sdk-root <SDK 경로>`를 사용합니다. 테스트 실행 시 Python과 Unicorn 2.1.4, pyelftools 0.32가 필요합니다.
 
-`releases/v0.1`은 검증된 빌드의 고정 산출물입니다. 재빌드하면 새 산출물은 `mapping_sensor_fw/build`에 생성됩니다. 전체 SDK, Python 실행 의존성, CCS 임시 작업공간은 Git에서 제외했습니다.
+현재 버전은 `releases/v0.2`입니다. `releases/v0.1`은 이전 빌드의 고정 산출물로 유지합니다. 재빌드하면 새 산출물은 `mapping_sensor_fw/build`에 생성됩니다. 전체 SDK, Python 실행 의존성, CCS 임시 작업공간은 Git에서 제외했습니다.
 
 ## 실물 테스트 체크리스트: XDS110 → CCS 라이팅 → UART 20채널
 
@@ -62,7 +64,7 @@ VTref는 타깃 전압 감지용으로 연결하며, 여기서는 **보드에 �
 - [ ] `targetConfigs/MSPM0G3507.ccxml`을 열어 Device=`MSPM0G3507`, Connection=`Texas Instruments XDS110 USB Debug Probe`, 인터페이스=`SWD`, 클록=`1MHz`를 확인한다.
 - [ ] **Properties → Debug → MSPM0 Flash Settings**에서 삭제 범위를 **Erase MAIN memory only**로 선택한다. 이번 시험은 NONMAIN/BCR/BSL을 변경하지 않는다.
 - [ ] **Debug Project**를 실행하고 Flash 다운로드가 성공하는지 확인한다. 파일을 물으면 위 `Debug` 폴더의 `.out`을 지정한다.
-- [ ] 직접 파일을 선택해 다운로드한다면 저장소의 `releases/v0.1/mapping_sensor.out`도 사용할 수 있다. 수정 후 재빌드한 FW와 고정 릴리스 파일을 혼동하지 않는다.
+- [ ] 직접 파일을 선택해 다운로드한다면 저장소의 `releases/v0.2/mapping_sensor.out`도 사용할 수 있다. 수정 후 재빌드한 FW와 고정 릴리스 파일을 혼동하지 않는다.
 - [ ] `main()`에서 멈추면 **Resume/Continue**를 눌러 실행한다. 이후 UART 시험 동안 CPU를 실행 상태로 둔다.
 
 다운로드 후에는 보통 `main()`에서 정지한다. 멈춘 상태에서는 UART 응답이 없으므로 먼저 실행 상태를 확인한다. 실행 중 브레이크포인트로 멈추면 타이머·ADC·워치독에 영향을 줄 수 있어 첫 동작 시험은 중단점 없이 진행한다.
@@ -86,7 +88,7 @@ Flash 설정 근거: [TI MSPM0 CCS 안내 — Using TI XDS Tools / Flash Loader]
 - [ ] 터미널을 연 상태에서 보드를 리셋하고 아래 부팅 메시지를 확인한다.
 
 ```text
-MAPPING20 FW 0.1 READY / IDLE / RAM CONFIG
+MAPPING20 FW 0.2 READY / IDLE / RAM CONFIG
 ```
 
 - [ ] `HELP`를 보내 명령 목록이 나오는지 확인한다.

@@ -1,0 +1,9 @@
+{
+  "mapping_sensor.out": "0aaae9b61fbae68dba2038dc052c2fd8b12518264238bd3d8cb052f0f32dacb7",
+  "mapping_sensor.hex": "437330bc1d80d9a21b65df627735cfd27ddd503095311f58c263657d5093ce30",
+  "mapping_sensor.map": "bb61cf825b0b9983700c684ecec8bfe72098faa8b69ad110b05c175af870b72c",
+  "test_results.json": "14110e96bbcc2d13579386a7e30ddcd61ca2308ab11766a199cea5bc503e8b54",
+  "driver_test_results.json": "5734ed7ae7fd701f8b6d1eca25c110d0a75e13c096c207513b06f1c3fc4ff80b",
+  "artifact_checks.json": "07b7ee5adf9007c05e4799a40f518783df657a9d7697f450c46909e344343e09",
+  "architecture_checks.json": "e38fc8aae643a125b4b996584f0319075c29d4e3c6789969a945fea128cee08a"
+}

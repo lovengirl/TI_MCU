@@ -15,7 +15,8 @@ try {
   $build='.'
   $cc=Join-Path $compiler 'bin\tiarmclang.exe'
   $common=@('-mcpu=cortex-m0plus','-march=thumbv6m','-mthumb','-mfloat-abi=soft','-O2','-g','-Wall','-Wextra','-Werror','-D__MSPM0G3507__',"-I$root/include","-I$build","-I$SdkRoot/source","-I$SdkRoot/source/third_party/CMSIS/Core/Include")
-  $sources=@("$root/src/sensor.c","$root/src/main.c","$root/src/platform_mspm0.c","$build/ti_msp_dl_config.c","$SdkRoot/source/ti/devices/msp/m0p/startup_system_files/ticlang/startup_mspm0g350x_ticlang.c")
+  $sources=@(Get-ChildItem "$root/src" -Recurse -Filter '*.c' | ForEach-Object {Resolve-Path $_.FullName -Relative})
+  $sources+=@("$build/ti_msp_dl_config.c","$SdkRoot/source/ti/devices/msp/m0p/startup_system_files/ticlang/startup_mspm0g350x_ticlang.c")
   $objects=@()
   foreach($src in $sources){
     $obj=Join-Path $build (([IO.Path]::GetFileNameWithoutExtension($src))+'.o')

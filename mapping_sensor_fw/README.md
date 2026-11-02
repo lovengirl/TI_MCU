@@ -2,6 +2,26 @@
 
 20채널 Tx/Rx 순차 제어, 공통 DAC의 채널별 광량 갱신, ADC OFF/ON 차분 측정을 위한 시험용 FW입니다. 실물 보드에는 연결하거나 다운로드하지 않았습니다.
 
+## V2 블록별 소스 구조
+
+현재 FW 버전은 0.2입니다. [상세 구조·API 설계](ARCHITECTURE_V2.md)를 실제 C 파일로 구현했습니다. main은 App_Init/App_Process만 호출합니다.
+
+| 폴더 | 모듈 |
+|---|---|
+| `src/app` | 응용 작업 순서, 명령 실행 |
+| `src/board` | 보드 초기화, 짧은 임계구역, 상태 출력 |
+| `src/drivers` | 채널 선택, DAC/Tx, ADC/DMA, 타이머, UART, 워치독 |
+| `src/sensor` | 스캔 상태 머신, 프레임 버퍼 |
+| `src/processing` | 신호 보정, 감지 판정 |
+| `src/config` | 설정·예약값·버전 |
+| `src/comm` | 명령 파서, 응답 스냅샷과 비차단 송신 |
+| `src/diagnostics` | 오류 및 통계 |
+| `src/interrupts` | 드라이버 IRQ 함수로 연결하는 진입점 |
+
+모든 공개 헤더는 `include/`에 있습니다. 다른 모듈의 상태를 직접 수정하지 않고 API를 호출합니다. 설정과 원시 프레임·처리 결과의 소유권을 분리하고, 프레임마다 설정 스냅샷을 보존합니다.
+
+V2는 RESULT 응답을 줄 단위로 재시도하면서 전송하므로 송신 버퍼가 일시적으로 부족해도 프레임 중간 줄을 버리지 않습니다. 응답 생성 중 추가 명령은 ERR로 거부하되 STOP/ESTOP은 즉시 실행한 뒤 응답을 기존 프레임 뒤에 정렬합니다. 짧은 ACK 큐가 넘치면 TX_DROP에 반영합니다. 명령은 기존처럼 한 번에 하나씩 보내고 전체 응답을 기다립니다.
+
 ## 빌드 결과 및 범위
 
 - `build/mapping_sensor.out`: CCS 디버그/다운로드용 ELF
@@ -9,7 +29,9 @@
 - `build/mapping_sensor.map`: 메모리 배치
 - `board.syscfg`: 실제 CLI 검증을 통과한 핀/주변장치 설정
 - `mapping_sensor.projectspec`: CCS 가져오기용. 검증된 생성 파일을 사용합니다.
-- `build/test_results.json`: ARM 에뮬레이션 결과
+- `build/test_results.json`: 응용·프로토콜 ARM 에뮬레이션 결과
+- `build/driver_test_results.json`: 실제 드라이버 C의 레지스터 계약 검사
+- `build/architecture_checks.json`: 계층 분리·CCS 소스 목록 검사
 - `build/artifact_checks.json`: 생성 설정/ELF 검사 결과
 
 구현: 채널 0~19 스캔, DAC 코드 갱신, 타이머 이벤트 ADC 트리거와 DMA 취득, OFF/ON 각각 4샘플, 차분/극성/오프셋/이득 보정, 히스테리시스와 연속 프레임 확인, 포화 채널 무효 처리, 단발/연속 측정, 일반/긴급 정지, 25ms 상태 타임아웃, 약 1초 WWDT, UART 명령, 이중 프레임 버퍼.
@@ -30,7 +52,7 @@
 
 다른 PC에서 테스트를 재실행할 때는 Python 환경에 `unicorn==2.1.4`와 `pyelftools==0.32`가 필요합니다. `python -m pip install --target tools/python_deps unicorn==2.1.4 pyelftools==0.32`로 준비하고 `test.ps1 -Python <python.exe 경로>`로 실행합니다. Git 저장소에는 이 실행 의존성을 포함하지 않습니다.
 
-SDK는 상위 `vendor/mspm0-sdk`에 있습니다. Windows 경로 길이 및 대소문자 충돌을 피하도록 소스/예제 중심의 sparse checkout으로 확보했습니다. 시스템 TI 설치 폴더에 SDK를 설치하거나 수정하지 않았습니다.
+독립 빌드의 기본 SDK 경로는 저장소 루트의 `vendor/mspm0-sdk`입니다. 다른 위치는 `build.ps1 -SdkRoot <SDK 경로>`로 지정합니다. Windows 경로 길이 및 대소문자 충돌을 피하도록 소스/예제 중심의 sparse checkout으로 확보했습니다. 시스템 TI 설치 폴더에 SDK를 설치하거나 수정하지 않았습니다.
 
 ```powershell
 & .\build.ps1
@@ -44,7 +66,7 @@ TI 컴파일러의 한글 절대 경로 처리 문제를 피하기 위해 빌드
 
 `mapping_sensor.projectspec`을 프로젝트 가져오기 기능에서 선택합니다. 필요한 SDK 헤더/라이브러리와 검증된 `ccs_support` 생성 파일이 함께 복사됩니다. 이 프로젝트에서 `.syscfg` 자동 재생성은 제외되어 있습니다. 핀 설정을 변경하면 먼저 `build.ps1`로 재생성/검증하고 `tools/prepare_ccs.py`로 `ccs_support`를 갱신한 뒤 CCS 프로젝트에 반영해야 합니다.
 
-원래 작업공간의 `ccs_verified_workspace/mapping_sensor_mspm0g3507`에서 CCS 자체 가져오기/빌드를 검증했습니다. 최종 빌드는 오류 0개·경고 0개입니다. Git에는 임시 작업공간 대신 projectspec과 필요한 파일을 포함했습니다. 새 작업공간으로 가져와 사용합니다.
+원래 작업공간의 `ccs_v2_workspace/mapping_sensor_mspm0g3507`에서 CCS 자체 가져오기/빌드를 검증했습니다. 최종 빌드는 오류 0개·경고 0개입니다. Git에는 임시 작업공간 대신 projectspec과 필요한 파일을 포함했습니다. 기존 V1 프로젝트의 복사된 소스는 자동으로 V2로 갱신되지 않으므로 새 작업공간으로 가져와 사용합니다. C/H 파일 추가 후에는 `python tools/update_projectspec.py`로 목록을 갱신합니다.
 
 XDS110을 연결하고 `build/mapping_sensor.out`을 사용해도 됩니다. 다운로드와 실물 시험은 사용자가 수행합니다. BCR/BSL 잠금이나 부트 설정을 변경하는 데이터는 포함하지 않습니다.
 
@@ -103,10 +125,10 @@ DMA 완료 ISR은 샘플 타이머를 정지하고 Tx를 차단합니다. 상태
 5. 광학 경로 연결 후 DAC를 낮은 값에서 조정하고 원시값·극성을 확인합니다.
 6. `START`, `STOP`, `ESTOP`, 전원 재투입을 시험합니다.
 
-CCS Expressions에서 `g_sensor`, `g_latest_frame`, `g_frame_count`를 볼 수 있습니다. 오류 코드는 1=시간 초과, 2/3=잘못된 완료 이벤트, 4=ADC 범위 이상입니다. STATUS LED는 오류 상태에서 High입니다.
+V1의 g_sensor/g_latest_frame/g_frame_count는 제거했습니다. 조회 API는 App_GetStatus/App_GetLatestFrame/Scan_GetStatus입니다. CCS에서 소스 문맥을 선택해 app.c의 latest_frame 또는 scan_controller.c의 state/channel을 관찰하거나 UART STATUS/RESULT로 조회합니다. 최적화 빌드에서는 일부 변수가 표시되지 않을 수 있습니다. 오류 코드는 1=시간 초과, 2/3=잘못된 이벤트·드라이버 상태, 4=ADC 범위 이상입니다. STATUS LED는 오류 상태에서 High입니다.
 
 ## 시뮬레이션의 범위
 
-설치된 CCS에서 MSPM0G3507의 주변장치를 시뮬레이션하는 TI 타깃은 확인되지 않았습니다. 따라서 TI 컴파일러로 컴파일한 실제 `sensor.c`를 ARM Thumb 에뮬레이터에서 실행하고 HAL을 모의 구현했습니다. 성공 결과를 실물 ADC/DMA 파형이나 TSN 통신 검증으로 해석하면 안 됩니다.
+설치된 CCS에서 MSPM0G3507의 주변장치 시뮬레이터는 확인되지 않았습니다. V2에서는 TI 컴파일러로 컴파일한 실제 응용·프로토콜 모듈을 모의 하드웨어와 ARM Thumb 에뮬레이터에서 실행합니다. 별도 시험에서는 실제 드라이버 C를 메모리로 치환한 레지스터와 실행해 호출 계약을 확인합니다. 실제 레지스터의 부작용·ADC/DAC 파형·광학 신호·실물 IRQ 타이밍은 검증하지 않습니다.
 
 내부 테스트는 20채널 순서, 히스테리시스, 프레임 경계 설정 변경, 입력 범위, 일반 정지, 오류 복구, ADC 포화, 극성/보정, 잘못된 이벤트, 버퍼 소유권, 비정상 ADC값, 각 상태의 긴급 정지, 100프레임 연속 운전을 검사합니다.

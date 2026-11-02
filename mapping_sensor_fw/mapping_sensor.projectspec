@@ -1,20 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <projectSpec>
- <project name="mapping_sensor_mspm0g3507" title="20-channel mapping sensor" configurations="Debug" toolChain="TICLANG" connection="TIXDS110_Connection.xml" device="MSPM0G3507" ignoreDefaultDeviceSettings="true" ignoreDefaultCCSSettings="true"
- compilerBuildOptions="-I../include -I../generated -I../sdk/source -I../sdk/source/third_party/CMSIS/Core/Include -D__MSPM0G3507__ -mcpu=cortex-m0plus -march=thumbv6m -mthumb -mfloat-abi=soft -O2 -g -Wall -Wextra -Werror"
- linkerBuildOptions="-L../sdk/source -L${CG_TOOL_ROOT}/lib -lti/driverlib/lib/ticlang/m0p/mspm0g1x0x_g3x0x/driverlib.a -llibc.a -Wl,--rom_model -Wl,--warn_sections -Wl,--stack_size=2048 -Wl,--heap_size=0">
-  <property name="buildProfile" value="release"/>
-  <file path="src/main.c" action="copy" targetDirectory="src"/>
-  <file path="src/sensor.c" action="copy" targetDirectory="src"/>
-  <file path="src/platform_mspm0.c" action="copy" targetDirectory="src"/>
-  <file path="include/sensor.h" action="copy" targetDirectory="include"/>
-  <file path="include/platform.h" action="copy" targetDirectory="include"/>
-  <file path="ccs_support/ti_msp_dl_config.c" action="copy" targetDirectory="generated"/>
-  <file path="ccs_support/ti_msp_dl_config.h" action="copy" targetDirectory="generated"/>
-  <file path="ccs_support/firmware_linker.cmd" action="copy"/>
-  <file path="ccs_support/startup_mspm0g350x_ticlang.c" action="copy" targetDirectory="src"/>
-  <file path="ccs_support/sdk" action="copy" excludeFromBuild="true"/>
-  <file path="board.syscfg" action="copy" excludeFromBuild="true"/>
-  <file path="README.md" action="copy"/>
- </project>
+  <project name="mapping_sensor_mspm0g3507" title="20-channel mapping sensor" configurations="Debug" toolChain="TICLANG" connection="TIXDS110_Connection.xml" device="MSPM0G3507" ignoreDefaultDeviceSettings="true" ignoreDefaultCCSSettings="true" compilerBuildOptions="-I../include -I../generated -I../sdk/source -I../sdk/source/third_party/CMSIS/Core/Include -D__MSPM0G3507__ -mcpu=cortex-m0plus -march=thumbv6m -mthumb -mfloat-abi=soft -O2 -g -Wall -Wextra -Werror" linkerBuildOptions="-L../sdk/source -L${CG_TOOL_ROOT}/lib -lti/driverlib/lib/ticlang/m0p/mspm0g1x0x_g3x0x/driverlib.a -llibc.a -Wl,--rom_model -Wl,--warn_sections -Wl,--stack_size=2048 -Wl,--heap_size=0">
+    <property name="buildProfile" value="release" />
+    <file path="ccs_support/ti_msp_dl_config.c" action="copy" targetDirectory="generated" />
+    <file path="ccs_support/ti_msp_dl_config.h" action="copy" targetDirectory="generated" />
+    <file path="ccs_support/firmware_linker.cmd" action="copy" />
+    <file path="ccs_support/startup_mspm0g350x_ticlang.c" action="copy" targetDirectory="src" />
+    <file path="ccs_support/sdk" action="copy" excludeFromBuild="true" />
+    <file path="board.syscfg" action="copy" excludeFromBuild="true" />
+    <file path="README.md" action="copy" />
+    <file path="src/app/app.c" action="copy" targetDirectory="src/app" />
+    <file path="src/app/command_dispatcher.c" action="copy" targetDirectory="src/app" />
+    <file path="src/board/board.c" action="copy" targetDirectory="src/board" />
+    <file path="src/comm/command_parser.c" action="copy" targetDirectory="src/comm" />
+    <file path="src/comm/response_formatter.c" action="copy" targetDirectory="src/comm" />
+    <file path="src/config/sensor_config.c" action="copy" targetDirectory="src/config" />
+    <file path="src/diagnostics/diagnostics.c" action="copy" targetDirectory="src/diagnostics" />
+    <file path="src/drivers/adc_acquisition.c" action="copy" targetDirectory="src/drivers" />
+    <file path="src/drivers/channel_selector.c" action="copy" targetDirectory="src/drivers" />
+    <file path="src/drivers/light_control.c" action="copy" targetDirectory="src/drivers" />
+    <file path="src/drivers/measurement_timer.c" action="copy" targetDirectory="src/drivers" />
+    <file path="src/drivers/uart_transport.c" action="copy" targetDirectory="src/drivers" />
+    <file path="src/drivers/watchdog_service.c" action="copy" targetDirectory="src/drivers" />
+    <file path="src/interrupts/interrupt_handlers.c" action="copy" targetDirectory="src/interrupts" />
+    <file path="src/main.c" action="copy" targetDirectory="src" />
+    <file path="src/processing/detection.c" action="copy" targetDirectory="src/processing" />
+    <file path="src/processing/signal_processing.c" action="copy" targetDirectory="src/processing" />
+    <file path="src/sensor/frame_buffer.c" action="copy" targetDirectory="src/sensor" />
+    <file path="src/sensor/scan_controller.c" action="copy" targetDirectory="src/sensor" />
+    <file path="include/adc_acquisition.h" action="copy" targetDirectory="include" />
+    <file path="include/app.h" action="copy" targetDirectory="include" />
+    <file path="include/board.h" action="copy" targetDirectory="include" />
+    <file path="include/board_pins.h" action="copy" targetDirectory="include" />
+    <file path="include/channel_selector.h" action="copy" targetDirectory="include" />
+    <file path="include/command_dispatcher.h" action="copy" targetDirectory="include" />
+    <file path="include/command_parser.h" action="copy" targetDirectory="include" />
+    <file path="include/detection.h" action="copy" targetDirectory="include" />
+    <file path="include/diagnostics.h" action="copy" targetDirectory="include" />
+    <file path="include/frame_buffer.h" action="copy" targetDirectory="include" />
+    <file path="include/light_control.h" action="copy" targetDirectory="include" />
+    <file path="include/measurement_timer.h" action="copy" targetDirectory="include" />
+    <file path="include/response_formatter.h" action="copy" targetDirectory="include" />
+    <file path="include/scan_controller.h" action="copy" targetDirectory="include" />
+    <file path="include/sensor_config.h" action="copy" targetDirectory="include" />
+    <file path="include/sensor_types.h" action="copy" targetDirectory="include" />
+    <file path="include/signal_processing.h" action="copy" targetDirectory="include" />
+    <file path="include/uart_transport.h" action="copy" targetDirectory="include" />
+    <file path="include/watchdog_service.h" action="copy" targetDirectory="include" />
+  </project>
 </projectSpec>

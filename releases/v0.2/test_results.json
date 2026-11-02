@@ -1,0 +1,7 @@
+{
+  "test_cases_passed": 15,
+  "assertions": 15933,
+  "failed_case": 0,
+  "failed_line": 0,
+  "scope": "TI Arm Clang compiled V2 app, scan, configuration, buffers, processing and UART protocol on ARM Thumb emulator; mocked hardware, no peripheral timing simulation"
+}

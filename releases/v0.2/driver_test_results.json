@@ -1,0 +1,7 @@
+{
+  "test_cases_passed": 6,
+  "assertions": 42,
+  "failed_case": 0,
+  "failed_line": 0,
+  "scope": "Production TI-compiled drivers on ARM Thumb emulator with injected memory-backed registers; no peripheral side effects, analog signals or timing simulation"
+}

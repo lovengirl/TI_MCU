@@ -1,0 +1,166 @@
+[
+  {
+    "check": "19 implementation C files",
+    "pass": true
+  },
+  {
+    "check": "no object filename collisions",
+    "pass": true
+  },
+  {
+    "check": "main delegates initialization and loop",
+    "pass": true
+  },
+  {
+    "check": "legacy monoliths removed",
+    "pass": true
+  },
+  {
+    "check": "CCS source app.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source command_dispatcher.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source board.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source command_parser.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source response_formatter.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source sensor_config.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source diagnostics.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source adc_acquisition.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source channel_selector.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source light_control.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source measurement_timer.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source uart_transport.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source watchdog_service.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source interrupt_handlers.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source main.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source detection.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source signal_processing.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source frame_buffer.c",
+    "pass": true
+  },
+  {
+    "check": "CCS source scan_controller.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access app.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access command_dispatcher.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access command_parser.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access response_formatter.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access sensor_config.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access diagnostics.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access detection.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access signal_processing.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access frame_buffer.c",
+    "pass": true
+  },
+  {
+    "check": "no direct TI hardware access scan_controller.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency command_parser.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency response_formatter.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency detection.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency signal_processing.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency sensor_config.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency frame_buffer.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency scan_controller.c",
+    "pass": true
+  },
+  {
+    "check": "no application dependency diagnostics.c",
+    "pass": true
+  }
+]
